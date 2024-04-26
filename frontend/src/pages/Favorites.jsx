@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { FaMinusCircle } from "react-icons/fa"
-
 import { backendUrl } from "../api/api"
 import Header from "../components/Header"
 import MovieCard from "../components/MovieCard"
 import Footer from "../components/Footer"
 
-const Favorites = ({ movies }) => {
+const Favorites = ({ movies, input, setInput, filterdMovies, setFilteredMovies }) => {
   const [favs, setFavs] = useState([])
 
   useEffect(() => {
@@ -32,7 +31,12 @@ const Favorites = ({ movies }) => {
 
   return (
     <>
-      <Header />
+      <Header
+        movies={movies}
+        input={input}
+        setInput={setInput}
+        setFilteredMovies={setFilteredMovies}
+      />
       <section className="px-8 py-12 bg-green-dark">
         {favs.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 min-h-screen">

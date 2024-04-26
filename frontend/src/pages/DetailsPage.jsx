@@ -5,7 +5,15 @@ import { backendUrl } from "../api/api"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
-const DetailsPage = ({ singleMovie, setSingleMovie }) => {
+const DetailsPage = ({
+  singleMovie,
+  setSingleMovie,
+  movies,
+  input,
+  setInput,
+  filterdMovies,
+  setFilteredMovies
+}) => {
   const [title, setTitle] = useState("")
   const [year, setYear] = useState("")
   const [director, setDirector] = useState("")
@@ -28,7 +36,7 @@ const DetailsPage = ({ singleMovie, setSingleMovie }) => {
     fetch(`${backendUrl}/api/v1/favorites/${movieId}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.movieId === movieId) {
+        if (data._id === movieId) {
           setFavDisabled(true)
         } else {
           setFavDisabled(false)
@@ -92,7 +100,13 @@ const DetailsPage = ({ singleMovie, setSingleMovie }) => {
 
   return (
     <>
-      <Header />
+      <Header
+        movies={movies}
+        input={input}
+        setInput={setInput}
+        filterdMovies={filterdMovies}
+        setFilteredMovies={setFilteredMovies}
+      />
       <section className="bg-green-dark py-12 px-12">
         {singleMovie ? (
           <section>

@@ -4,7 +4,7 @@ import { backendUrl } from "../api/api"
 import Hero from "../components/Hero"
 import Footer from "../components/Footer"
 
-const AddNewMovie = ({ movies, setMovies }) => {
+const AddNewMovie = ({ movies, setMovies, input, setInput, filterdMovies, setFilteredMovies }) => {
   const [title, setTitle] = useState("")
   const [year, setYear] = useState("")
   const [director, setDirector] = useState("")
@@ -55,7 +55,14 @@ const AddNewMovie = ({ movies, setMovies }) => {
 
   return (
     <>
-      <Header />
+      <Header
+        movies={movies}
+        setMovies={setMovies}
+        input={input}
+        setInput={setInput}
+        filterdMovies={filterdMovies}
+        setFilteredMovies={setFilteredMovies}
+      />
       <Hero />
       <section className="pt-12 bg-green-dark py-12 px-12 ">
         <h1 className="font-bold text-2xl text-light-red mb-8 mt-10">Add your own movie</h1>

@@ -2,9 +2,9 @@ import express from "express"
 import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
-import { moviesDAO } from "./db-access/moviesDAO.js"
-import { favoritesDAO } from "./db-access/favoritesDAO.js"
-import { ObjectId } from "mongodb"
+import { connectToDataBase } from "./models/connectDb.js"
+import { Movie } from "./models/MovieModel.js"
+import { Favorite } from "./models/FavModel.js"
 
 // Import from dotenv
 config()
@@ -21,8 +21,7 @@ app.use(cors())
 // Endpoints for Movies Collection
 // ReadAll movies from DB
 app.get("/api/v1/movies", (req, res) => {
-  moviesDAO
-    .findAllMovies()
+  Movie.find({})
     .then((movies) => res.json(movies))
     .catch((err) => {
       console.log(err)
@@ -34,8 +33,7 @@ app.get("/api/v1/movies", (req, res) => {
 app.get("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
-  moviesDAO
-    .findOneMovie(movieId)
+  Movie.findById(movieId)
     .then((movie) => res.json(movie))
     .catch((err) => {
       console.log(err)
@@ -50,11 +48,10 @@ app.post("/api/v1/movies", (req, res) => {
     year: req.body.year,
     director: req.body.director,
     plot: req.body.plot,
-    imdb: { rating: req.body.rating }
+    imdb: { rating: req.body.imdb.rating }
   }
 
-  moviesDAO
-    .createNewMovie(newMovie)
+  Movie.create(newMovie)
     .then((newMovie) => res.json(newMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -66,8 +63,7 @@ app.post("/api/v1/movies", (req, res) => {
 app.delete("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
-  moviesDAO
-    .deleteOneMovie(movieId)
+  Movie.findByIdAndDelete(movieId)
     .then((deletedMovie) => res.json(deletedMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -80,8 +76,7 @@ app.patch("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
 
-  moviesDAO
-    .updateOneMovie(movieId, updatedContent)
+  Movie.findByIdAndUpdate(movieId, updatedContent, { new: true })
     .then((updatedMovie) => res.json(updatedMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -94,12 +89,12 @@ app.patch("/api/v1/movies/:movieId", (req, res) => {
 app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
   const newFavorite = {
     ...req.body,
-    _id: ObjectId.createFromHexString(req.body._id),
-    movieId: ObjectId.createFromHexString(req.params.movieId)
+    _id: req.body._id,
+    movieId: req.params.movieId
   }
 
-  favoritesDAO
-    .createNewFavorites(newFavorite)
+  // # MovieId wird nicht mit übergeben: durchdenken
+  Favorite.create(newFavorite)
     .then((newFavorite) => res.json(newFavorite || {}))
     .catch((err) => {
       console.log(err)
@@ -109,10 +104,9 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
 
 // DeleteOne: Delete Favorite from Collection
 app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
-  const favoriteId = ObjectId.createFromHexString(req.params.favoriteId)
+  const favoriteId = req.params.favoriteId
 
-  favoritesDAO
-    .deleteFavorite(favoriteId)
+  Favorite.findByIdAndDelete(favoriteId)
     .then((deletedFavorite) => res.json(deletedFavorite || {}))
     .catch((err) => {
       console.log(err)
@@ -122,8 +116,7 @@ app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
 
 // GetAll: Get all Favorites
 app.get("/api/v1/favorites", (req, res) => {
-  favoritesDAO
-    .getFavorites()
+  Favorite.find()
     .then((favorites) => res.json(favorites))
     .catch((err) => {
       console.log(err)
@@ -136,8 +129,7 @@ app.patch("/api/v1/movies/:movieId/update", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
 
-  favoritesDAO
-    .updateOneFav(movieId, updatedContent)
+  Favorite.findByIdAndUpdate(movieId, updatedContent)
     .then((updatedFav) => res.json(updatedFav || {}))
     .catch((err) => {
       console.log(err)
@@ -149,8 +141,7 @@ app.patch("/api/v1/movies/:movieId/update", (req, res) => {
 app.get("/api/v1/favorites/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
-  favoritesDAO
-    .getOneFavorite(movieId)
+  Favorite.findById(movieId)
     .then((favorite) => res.json(favorite || {}))
     .catch((err) => {
       console.log(err)
@@ -158,5 +149,14 @@ app.get("/api/v1/favorites/:movieId", (req, res) => {
     })
 })
 
-const PORT = process.env.PORT
-app.listen(PORT, () => console.log("Server runs", PORT))
+// Neu: Conditional: App soll auf eingehene Request erst warten, wenn Verbindung zur Datenbank hergestellt ist
+
+connectToDataBase()
+  .then(() => {
+    const PORT = process.env.PORT
+    app.listen(PORT, () => console.log("Server runs", PORT))
+  })
+  .catch((err) => {
+    console.log(err)
+    process.exit() // Node Prozess beenden, wenn nicht keine Datenbankverbindung
+  })

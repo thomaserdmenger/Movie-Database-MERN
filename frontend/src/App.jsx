@@ -10,6 +10,8 @@ function App() {
   const [movies, setMovies] = useState([])
   const [amount, setAmount] = useState(10)
   const [singleMovie, setSingleMovie] = useState(null)
+  const [input, setInput] = useState("")
+  const [filterdMovies, setFilteredMovies] = useState([])
 
   useEffect(() => {
     fetch(`${backendUrl}/api/v1/movies`)
@@ -24,16 +26,56 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<HomePage movies={movies} amount={amount} setAmount={setAmount} />}
+            element={
+              <HomePage
+                movies={movies}
+                amount={amount}
+                setAmount={setAmount}
+                input={input}
+                setInput={setInput}
+                filterdMovies={filterdMovies}
+                setFilteredMovies={setFilteredMovies}
+              />
+            }
           />
-          <Route path="/favs" element={<Favorites movies={movies} />} />
+          <Route
+            path="/favs"
+            element={
+              <Favorites
+                movies={movies}
+                input={input}
+                setInput={setInput}
+                filterdMovies={filterdMovies}
+                setFilteredMovies={setFilteredMovies}
+              />
+            }
+          />
           <Route
             path="/movies/newMovie"
-            element={<AddNewMovie movies={movies} setMovies={setMovies} />}
+            element={
+              <AddNewMovie
+                movies={movies}
+                setMovies={setMovies}
+                input={input}
+                setInput={setInput}
+                filterdMovies={filterdMovies}
+                setFilteredMovies={setFilteredMovies}
+              />
+            }
           />
           <Route
             path="/movies/:movieId"
-            element={<DetailsPage singleMovie={singleMovie} setSingleMovie={setSingleMovie} />}
+            element={
+              <DetailsPage
+                singleMovie={singleMovie}
+                setSingleMovie={setSingleMovie}
+                movies={movies}
+                input={input}
+                setInput={setInput}
+                filterdMovies={filterdMovies}
+                setFilteredMovies={setFilteredMovies}
+              />
+            }
           />
         </Routes>
       </BrowserRouter>
