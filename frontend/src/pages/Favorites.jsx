@@ -37,9 +37,10 @@ const Favorites = ({ movies, input, setInput, filterdMovies, setFilteredMovies }
         setInput={setInput}
         setFilteredMovies={setFilteredMovies}
       />
-      <section className="px-8 py-12 bg-green-dark">
+      <section className="px-8 py-12 bg-green-dark min-h-screen">
+        <h1 className="text-light-red font-bold text-3xl mb-1 mb-8">My Favorites</h1>
         {favs.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4 min-h-screen">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4">
             {favs.map((fav, index) => {
               return (
                 <div className="" key={index}>

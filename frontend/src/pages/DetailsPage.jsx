@@ -107,7 +107,7 @@ const DetailsPage = ({
         filterdMovies={filterdMovies}
         setFilteredMovies={setFilteredMovies}
       />
-      <section className="bg-green-dark py-12 px-12">
+      <section className="bg-green-dark py-12 px-12 min-h-screen">
         {singleMovie ? (
           <section>
             <article>

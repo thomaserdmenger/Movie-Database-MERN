@@ -64,7 +64,7 @@ const AddNewMovie = ({ movies, setMovies, input, setInput, filterdMovies, setFil
         setFilteredMovies={setFilteredMovies}
       />
       <Hero />
-      <section className="pt-12 bg-green-dark py-12 px-12 ">
+      <section className="pt-12 bg-green-dark py-12 px-12 min-h-[700px]">
         <h1 className="font-bold text-2xl text-light-red mb-8 mt-10">Add your own movie</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-9/12 m-auto pb-8">
           <input

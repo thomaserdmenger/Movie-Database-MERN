@@ -41,7 +41,7 @@ const Home = ({ movies, amount, setAmount, input, setInput, filterdMovies, setFi
           )}
         </section>
       ) : (
-        <section className="px-8 py-12 bg-green-dark">
+        <section className="px-8 py-12 bg-green-dark min-h-[700px]">
           {filterdMovies.length > 0 && (
             <div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:grid-cols-3 lg:grid-cols-4">
