@@ -122,12 +122,12 @@ app.get("/api/v1/favorites", (req, res) => {
     })
 })
 
-// ! UpdateOne: Update Fav when Movie updates
+// UpdateOne: Update Fav when Movie updates
 app.patch("/api/v1/movies/:movieId/update", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
 
-  Favorite.findByIdAndUpdate(movieId, updatedContent)
+  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
     .then((updatedFav) => res.json(updatedFav || {}))
     .catch((err) => {
       console.log(err)

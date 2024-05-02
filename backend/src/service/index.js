@@ -5,6 +5,7 @@ import { showAllFavorites } from "./showAllFavorites.js"
 import { showAllMovies } from "./showAllMovies.js"
 import { showOneFavorite } from "./showOneFavorite.js"
 import { showOneMovie } from "./showOneMovie.js"
+import { updateFavoriteWithMovie } from "./updateFavoriteWithMovie.js"
 import { updateOneMovie } from "./updateOneMovie.js"
 
 export const MoviesService = {
@@ -19,4 +20,5 @@ export const FavoritesService = {
   deleteOneFavorite,
   showAllFavorites,
   showOneFavorite,
+  updateFavoriteWithMovie,
 }
