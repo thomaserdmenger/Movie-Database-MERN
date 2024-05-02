@@ -28,14 +28,14 @@ const AddNewMovie = ({ movies, setMovies, input, setInput, filterdMovies, setFil
       title,
       year,
       director,
-      rating,
-      plot
+      imdb: { rating },
+      plot,
     }
 
     fetch(`${backendUrl}/api/v1/movies`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newMovie)
+      body: JSON.stringify(newMovie),
     })
       .then((res) => res.json())
       .then((data) => setMovies([data, ...movies]))

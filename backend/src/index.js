@@ -2,9 +2,10 @@ import express from "express"
 import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
-import { connectToDataBase } from "./models/connectDb.js"
+import { connectToDataBase } from "./models/index.js"
 import { Movie } from "./models/MovieModel.js"
 import { Favorite } from "./models/FavModel.js"
+import { FavoritesService, MoviesService } from "./service/index.js"
 
 // Import from dotenv
 config()
@@ -21,7 +22,7 @@ app.use(cors())
 // Endpoints for Movies Collection
 // ReadAll movies from DB
 app.get("/api/v1/movies", (req, res) => {
-  Movie.find({})
+  MoviesService.showAllMovies()
     .then((movies) => res.json(movies))
     .catch((err) => {
       console.log(err)
@@ -31,9 +32,7 @@ app.get("/api/v1/movies", (req, res) => {
 
 // ReadOne movie from DB
 app.get("/api/v1/movies/:movieId", (req, res) => {
-  const movieId = req.params.movieId
-
-  Movie.findById(movieId)
+  MoviesService.showOneMovie(req.params.movieId)
     .then((movie) => res.json(movie))
     .catch((err) => {
       console.log(err)
@@ -48,10 +47,10 @@ app.post("/api/v1/movies", (req, res) => {
     year: req.body.year,
     director: req.body.director,
     plot: req.body.plot,
-    imdb: { rating: req.body.imdb.rating }
+    imdb: { rating: req.body.imdb.rating },
   }
 
-  Movie.create(newMovie)
+  MoviesService.addNewMovie(newMovie)
     .then((newMovie) => res.json(newMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -59,7 +58,7 @@ app.post("/api/v1/movies", (req, res) => {
     })
 })
 
-// DeleteOne movie in database
+// # DeleteOne movie (and Fav) in database
 app.delete("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
@@ -76,7 +75,7 @@ app.patch("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
 
-  Movie.findByIdAndUpdate(movieId, updatedContent, { new: true })
+  MoviesService.updateOneMovie(movieId, updatedContent)
     .then((updatedMovie) => res.json(updatedMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -90,11 +89,10 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
   const newFavorite = {
     ...req.body,
     _id: req.body._id,
-    movieId: req.params.movieId
+    movieId: req.params.movieId,
   }
 
-  // # MovieId wird nicht mit übergeben: durchdenken
-  Favorite.create(newFavorite)
+  FavoritesService.addMovieAsFavorite(newFavorite)
     .then((newFavorite) => res.json(newFavorite || {}))
     .catch((err) => {
       console.log(err)
@@ -106,7 +104,7 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
 app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
   const favoriteId = req.params.favoriteId
 
-  Favorite.findByIdAndDelete(favoriteId)
+  FavoritesService.deleteOneFavorite(favoriteId)
     .then((deletedFavorite) => res.json(deletedFavorite || {}))
     .catch((err) => {
       console.log(err)
@@ -116,7 +114,7 @@ app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
 
 // GetAll: Get all Favorites
 app.get("/api/v1/favorites", (req, res) => {
-  Favorite.find()
+  FavoritesService.showAllFavorites()
     .then((favorites) => res.json(favorites))
     .catch((err) => {
       console.log(err)
@@ -129,7 +127,7 @@ app.patch("/api/v1/movies/:movieId/update", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
 
-  Favorite.findByIdAndUpdate(movieId, updatedContent)
+  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
     .then((updatedFav) => res.json(updatedFav || {}))
     .catch((err) => {
       console.log(err)
@@ -141,7 +139,7 @@ app.patch("/api/v1/movies/:movieId/update", (req, res) => {
 app.get("/api/v1/favorites/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
-  Favorite.findById(movieId)
+  FavoritesService.showOneFavorite(movieId)
     .then((favorite) => res.json(favorite || {}))
     .catch((err) => {
       console.log(err)
