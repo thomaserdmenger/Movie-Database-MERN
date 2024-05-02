@@ -5,6 +5,7 @@ import { config } from "dotenv"
 import { connectToDataBase } from "./models/index.js"
 import { Movie } from "./models/MovieModel.js"
 import { Favorite } from "./models/FavModel.js"
+import { MoviesService } from "./service/index.js"
 
 // Import from dotenv
 config()
@@ -21,7 +22,7 @@ app.use(cors())
 // Endpoints for Movies Collection
 // ReadAll movies from DB
 app.get("/api/v1/movies", (req, res) => {
-  Movie.find({})
+  MoviesService.showAllMovies()
     .then((movies) => res.json(movies))
     .catch((err) => {
       console.log(err)
