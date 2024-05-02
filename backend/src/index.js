@@ -34,7 +34,7 @@ app.get("/api/v1/movies", (req, res) => {
 app.get("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
-  Movie.findById(movieId)
+  MoviesService.showOneMovie(movieId)
     .then((movie) => res.json(movie))
     .catch((err) => {
       console.log(err)
