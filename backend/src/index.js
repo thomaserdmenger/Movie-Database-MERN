@@ -58,24 +58,17 @@ app.post("/api/v1/movies", (req, res) => {
     })
 })
 
-// # DeleteOne movie (and Fav) in database
-app.delete("/api/v1/movies/:movieId/:favId", (req, res) => {
+// DeleteOne movie (and Fav) in database
+app.delete("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
   const favId = req.params.favId
 
-  MoviesService.deleteOneMovie(movieId, favId)
+  MoviesService.deleteOneMovie(movieId)
     .then((deletedMovie) => res.json(deletedMovie || {}))
     .catch((err) => {
       console.log(err)
       res.status(500).json({ err, message: "Could not find movie" })
     })
-
-  // Movie.findByIdAndDelete(movieId)
-  //   .then((deletedMovie) => res.json(deletedMovie || {}))
-  //   .catch((err) => {
-  //     console.log(err)
-  //     res.status(500).json({ err, message: "Could not find movie" })
-  //   })
 })
 
 // UpdateOne movie in database
