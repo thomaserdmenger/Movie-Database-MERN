@@ -84,7 +84,7 @@ app.patch("/api/v1/movies/:movieId", (req, res) => {
 })
 
 // Endpoints for Favorites Collection
-// # CreateOne: Add new Favorite to Collection
+// CreateOne: Add new Favorite to Collection
 app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
   const newFavorite = {
     ...req.body,
@@ -100,11 +100,11 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
     })
 })
 
-// ! DeleteOne: Delete Favorite from Collection
+// # DeleteOne: Delete Favorite from Collection
 app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
   const favoriteId = req.params.favoriteId
 
-  Favorite.findByIdAndDelete(favoriteId)
+  FavoritesService.deleteOneFavorite(favoriteId)
     .then((deletedFavorite) => res.json(deletedFavorite || {}))
     .catch((err) => {
       console.log(err)
