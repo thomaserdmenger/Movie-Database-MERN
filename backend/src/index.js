@@ -135,11 +135,11 @@ app.patch("/api/v1/movies/:movieId/update", (req, res) => {
     })
 })
 
-// ! GetOne: Favorite
+// GetOne: Favorite
 app.get("/api/v1/favorites/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
-  Favorite.findById(movieId)
+  FavoritesService.showOneFavorite(movieId)
     .then((favorite) => res.json(favorite || {}))
     .catch((err) => {
       console.log(err)

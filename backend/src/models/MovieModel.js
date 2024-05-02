@@ -11,10 +11,10 @@ const movieSchema = new mongoose.Schema(
         type: Number,
         required: true,
         min: 0,
-        max: 10
+        max: 10,
       },
-      movieId: { type: mongoose.Types.ObjectId }
-    }
+      movieId: { type: mongoose.Types.ObjectId },
+    },
   },
   { collection: "movieDetails" }
 )
