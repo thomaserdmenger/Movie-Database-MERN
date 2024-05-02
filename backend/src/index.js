@@ -58,7 +58,7 @@ app.post("/api/v1/movies", (req, res) => {
     })
 })
 
-// ! DeleteOne movie in database
+// # DeleteOne movie (and Fav) in database
 app.delete("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
