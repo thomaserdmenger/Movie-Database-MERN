@@ -1,3 +1,4 @@
+import { addMovieAsFavorite } from "./addMovieAsFavorite.js"
 import { addNewMovie } from "./addNewMovie.js"
 import { showAllMovies } from "./showAllMovies.js"
 import { showOneMovie } from "./showOneMovie.js"
@@ -10,4 +11,6 @@ export const MoviesService = {
   updateOneMovie,
 }
 
-export const FavoritesService = {}
+export const FavoritesService = {
+  addMovieAsFavorite,
+}

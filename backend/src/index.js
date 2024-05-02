@@ -5,7 +5,7 @@ import { config } from "dotenv"
 import { connectToDataBase } from "./models/index.js"
 import { Movie } from "./models/MovieModel.js"
 import { Favorite } from "./models/FavModel.js"
-import { MoviesService } from "./service/index.js"
+import { FavoritesService, MoviesService } from "./service/index.js"
 
 // Import from dotenv
 config()
@@ -70,7 +70,7 @@ app.delete("/api/v1/movies/:movieId", (req, res) => {
     })
 })
 
-// ! UpdateOne movie in database
+// UpdateOne movie in database
 app.patch("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
@@ -84,7 +84,7 @@ app.patch("/api/v1/movies/:movieId", (req, res) => {
 })
 
 // Endpoints for Favorites Collection
-// ! CreateOne: Add new Favorite to Collection
+// # CreateOne: Add new Favorite to Collection
 app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
   const newFavorite = {
     ...req.body,
@@ -92,7 +92,7 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
     movieId: req.params.movieId,
   }
 
-  Favorite.create(newFavorite)
+  FavoritesService.addMovieAsFavorite(newFavorite)
     .then((newFavorite) => res.json(newFavorite || {}))
     .catch((err) => {
       console.log(err)
