@@ -9,6 +9,7 @@
 - Delete films from your favorites
 - View all your favorites on the favorites page
 - Create new movies to be added to the database
+- Delete Movies with Favorites
 
 ## Built with
 
