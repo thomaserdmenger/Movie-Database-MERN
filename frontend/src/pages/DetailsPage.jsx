@@ -98,12 +98,16 @@ const DetailsPage = ({
     })
       .then((res) => res.json())
       .then((data) => setSingleFavorite(data))
+      .catch((err) => console.log(err))
   }
 
   const handleDelete = () => {
     fetch(`${backendUrl}/api/v1/movies/${movieId}`, { method: "DELETE" })
       .then((res) => res.json())
-      .then((data) => setMovies(movies.filter((movie) => movie._id !== movieId)))
+      .then((data) => {
+        setMovies(movies.filter((movie) => movie._id !== movieId))
+        setFilteredMovies(movies.filter((movie) => movie._id !== movieId))
+      })
       .catch((err) => console.log(err))
 
     navigate("/")

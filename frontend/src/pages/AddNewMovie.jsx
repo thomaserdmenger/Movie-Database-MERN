@@ -45,6 +45,7 @@ const AddNewMovie = ({ movies, setMovies, input, setInput, filterdMovies, setFil
     setDirector("")
     setRating("")
     setPlot("")
+    setInput("")
 
     setSuccessMessage(true)
 
