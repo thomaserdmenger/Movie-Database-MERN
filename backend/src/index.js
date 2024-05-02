@@ -32,9 +32,7 @@ app.get("/api/v1/movies", (req, res) => {
 
 // ReadOne movie from DB
 app.get("/api/v1/movies/:movieId", (req, res) => {
-  const movieId = req.params.movieId
-
-  MoviesService.showOneMovie(movieId)
+  MoviesService.showOneMovie(req.params.movieId)
     .then((movie) => res.json(movie))
     .catch((err) => {
       console.log(err)
@@ -49,10 +47,10 @@ app.post("/api/v1/movies", (req, res) => {
     year: req.body.year,
     director: req.body.director,
     plot: req.body.plot,
-    imdb: { rating: req.body.imdb.rating }
+    imdb: { rating: req.body.imdb.rating },
   }
 
-  Movie.create(newMovie)
+  MoviesService.addNewMovie(newMovie)
     .then((newMovie) => res.json(newMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -91,7 +89,7 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
   const newFavorite = {
     ...req.body,
     _id: req.body._id,
-    movieId: req.params.movieId
+    movieId: req.params.movieId,
   }
 
   // # MovieId wird nicht mit übergeben: durchdenken
