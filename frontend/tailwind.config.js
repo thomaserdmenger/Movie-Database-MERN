@@ -8,14 +8,15 @@ export default {
       "light-red": "#A16171",
       white: "#FFFFFF",
       yellow: "#E9C46A",
-      disabled: "#EDEDED"
+      disabled: "#EDEDED",
+      red: "#97233F",
     },
     backgroundImage: {
-      "hero-pattern": "url('/images/hero.png')"
+      "hero-pattern": "url('/images/hero.png')",
     },
     fontFamily: {
-      sans: ["Inter", "system-ui"]
-    }
+      sans: ["Inter", "system-ui"],
+    },
   },
-  plugins: []
+  plugins: [],
 }

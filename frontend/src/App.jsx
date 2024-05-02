@@ -70,6 +70,7 @@ function App() {
                 singleMovie={singleMovie}
                 setSingleMovie={setSingleMovie}
                 movies={movies}
+                setMovies={setMovies}
                 input={input}
                 setInput={setInput}
                 filterdMovies={filterdMovies}

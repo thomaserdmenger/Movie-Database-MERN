@@ -58,11 +58,12 @@ app.post("/api/v1/movies", (req, res) => {
     })
 })
 
-// # DeleteOne movie (and Fav) in database
+// DeleteOne movie (and Fav) in database
 app.delete("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
+  const favId = req.params.favId
 
-  Movie.findByIdAndDelete(movieId)
+  MoviesService.deleteOneMovie(movieId)
     .then((deletedMovie) => res.json(deletedMovie || {}))
     .catch((err) => {
       console.log(err)

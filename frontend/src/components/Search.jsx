@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Search = ({ movies, input, setInput, setFilteredMovies }) => {
@@ -15,7 +14,6 @@ const Search = ({ movies, input, setInput, setFilteredMovies }) => {
     setFilteredMovies(filter)
     setInput("")
     navigate("/")
-    // setToggle(!toggle)
   }
 
   return (

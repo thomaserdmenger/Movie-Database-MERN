@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { FaPlusCircle } from "react-icons/fa"
 import { useEffect, useState } from "react"
 import { backendUrl } from "../api/api"
@@ -9,10 +9,11 @@ const DetailsPage = ({
   singleMovie,
   setSingleMovie,
   movies,
+  setMovies,
   input,
   setInput,
   filterdMovies,
-  setFilteredMovies
+  setFilteredMovies,
 }) => {
   const [title, setTitle] = useState("")
   const [year, setYear] = useState("")
@@ -23,6 +24,7 @@ const DetailsPage = ({
   const [favDisabled, setFavDisabled] = useState(false)
   const [singleFavorite, setSingleFavorite] = useState({})
   const { movieId } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(`${backendUrl}/api/v1/movies/${movieId}`)
@@ -64,13 +66,13 @@ const DetailsPage = ({
       year,
       director,
       imdb: { ...singleMovie.imdb, rating },
-      plot
+      plot,
     }
 
     fetch(`${backendUrl}/api/v1/movies/${movieId}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedMovie)
+      body: JSON.stringify(updatedMovie),
     })
       .then((res) => res.json())
       .then((data) => {
@@ -80,7 +82,7 @@ const DetailsPage = ({
     fetch(`${backendUrl}/api/v1/movies/${movieId}/update`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedMovie)
+      body: JSON.stringify(updatedMovie),
     })
 
     setOpenForm(!openForm)
@@ -92,10 +94,23 @@ const DetailsPage = ({
     fetch(`${backendUrl}/api/v1/movies/${movieId}/favorites`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(favoritesContent)
+      body: JSON.stringify(favoritesContent),
     })
       .then((res) => res.json())
       .then((data) => setSingleFavorite(data))
+      .catch((err) => console.log(err))
+  }
+
+  const handleDelete = () => {
+    fetch(`${backendUrl}/api/v1/movies/${movieId}`, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((data) => {
+        setMovies(movies.filter((movie) => movie._id !== movieId))
+        setFilteredMovies(movies.filter((movie) => movie._id !== movieId))
+      })
+      .catch((err) => console.log(err))
+
+    navigate("/")
   }
 
   return (
@@ -132,6 +147,11 @@ const DetailsPage = ({
                   className="flex gap-2 items-center border-2 border-petrol rounded-full"
                   onClick={handleEdit}>
                   <p className="text-petrol px-2">Edit Movie</p>
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex gap-2 items-center border-2 border-red rounded-full">
+                  <p className="text-red px-2">Delete Movie</p>
                 </button>
               </div>
               <div className="grid grid-cols-2 gap-6">
