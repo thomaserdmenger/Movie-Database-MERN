@@ -2,7 +2,7 @@ import express from "express"
 import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
-import { connectToDataBase } from "./models/connectDb.js"
+import { connectToDataBase } from "./models/index.js"
 import { Movie } from "./models/MovieModel.js"
 import { Favorite } from "./models/FavModel.js"
 
