@@ -58,7 +58,7 @@ app.post("/api/v1/movies", (req, res) => {
     })
 })
 
-// DeleteOne movie in database
+// ! DeleteOne movie in database
 app.delete("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
@@ -70,12 +70,12 @@ app.delete("/api/v1/movies/:movieId", (req, res) => {
     })
 })
 
-// UpdateOne movie in database
+// ! UpdateOne movie in database
 app.patch("/api/v1/movies/:movieId", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
 
-  Movie.findByIdAndUpdate(movieId, updatedContent, { new: true })
+  MoviesService.updateOneMovie(movieId, updatedContent)
     .then((updatedMovie) => res.json(updatedMovie || {}))
     .catch((err) => {
       console.log(err)
@@ -84,7 +84,7 @@ app.patch("/api/v1/movies/:movieId", (req, res) => {
 })
 
 // Endpoints for Favorites Collection
-// CreateOne: Add new Favorite to Collection
+// ! CreateOne: Add new Favorite to Collection
 app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
   const newFavorite = {
     ...req.body,
@@ -92,7 +92,6 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
     movieId: req.params.movieId,
   }
 
-  // # MovieId wird nicht mit übergeben: durchdenken
   Favorite.create(newFavorite)
     .then((newFavorite) => res.json(newFavorite || {}))
     .catch((err) => {
@@ -101,7 +100,7 @@ app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
     })
 })
 
-// DeleteOne: Delete Favorite from Collection
+// ! DeleteOne: Delete Favorite from Collection
 app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
   const favoriteId = req.params.favoriteId
 
@@ -113,7 +112,7 @@ app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
     })
 })
 
-// GetAll: Get all Favorites
+// ! GetAll: Get all Favorites
 app.get("/api/v1/favorites", (req, res) => {
   Favorite.find()
     .then((favorites) => res.json(favorites))
@@ -123,7 +122,7 @@ app.get("/api/v1/favorites", (req, res) => {
     })
 })
 
-// UpdateOne: Update Fav when Movie updates
+// ! UpdateOne: Update Fav when Movie updates
 app.patch("/api/v1/movies/:movieId/update", (req, res) => {
   const movieId = req.params.movieId
   const updatedContent = req.body
@@ -136,7 +135,7 @@ app.patch("/api/v1/movies/:movieId/update", (req, res) => {
     })
 })
 
-// GetOne: Favorite
+// ! GetOne: Favorite
 app.get("/api/v1/favorites/:movieId", (req, res) => {
   const movieId = req.params.movieId
 
