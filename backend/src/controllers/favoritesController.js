@@ -20,21 +20,6 @@ const getOneFavorite = (req, res) => {
     })
 }
 
-const postNewFavorite = (req, res) => {
-  const newFavorite = {
-    ...req.body,
-    _id: req.body._id,
-    movieId: req.params.movieId,
-  }
-
-  FavoritesService.addMovieAsFavorite(newFavorite)
-    .then((newFavorite) => res.json(newFavorite || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not found Favorite" })
-    })
-}
-
 const deleteOneFavorite = (req, res) => {
   const favoriteId = req.params.favoriteId
 
@@ -46,22 +31,8 @@ const deleteOneFavorite = (req, res) => {
     })
 }
 
-const patchOneFavorite = (req, res) => {
-  const movieId = req.params.movieId
-  const updatedContent = req.body
-
-  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
-    .then((updatedFav) => res.json(updatedFav || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find fav" })
-    })
-}
-
 export const FavoritesController = {
-  postNewFavorite,
   deleteOneFavorite,
   getAllFavorites,
-  patchOneFavorite,
   getOneFavorite,
 }

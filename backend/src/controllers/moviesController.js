@@ -1,4 +1,4 @@
-import { MoviesService } from "../service/index.js"
+import { FavoritesService, MoviesService } from "../service/index.js"
 
 const getAllMovies = (req, res) => {
   MoviesService.showAllMovies()
@@ -58,10 +58,39 @@ const patchOneMovie = (req, res) => {
     })
 }
 
+const postNewFavorite = (req, res) => {
+  const newFavorite = {
+    ...req.body,
+    _id: req.body._id,
+    movieId: req.params.movieId,
+  }
+
+  FavoritesService.addMovieAsFavorite(newFavorite)
+    .then((newFavorite) => res.json(newFavorite || {}))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not found Favorite" })
+    })
+}
+
+const patchOneFavorite = (req, res) => {
+  const movieId = req.params.movieId
+  const updatedContent = req.body
+
+  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
+    .then((updatedFav) => res.json(updatedFav || {}))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not find fav" })
+    })
+}
+
 export const MoviesController = {
   getAllMovies,
   getOneMovie,
   postNewMovie,
   deleteOneMovie,
   patchOneMovie,
+  postNewFavorite,
+  patchOneFavorite,
 }

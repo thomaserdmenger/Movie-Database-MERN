@@ -3,9 +3,8 @@ import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
 import { connectToDataBase } from "./models/index.js"
-import { MoviesController } from "./controllers/MoviesController.js"
-import { FavoritesController } from "./controllers/favoritesController.js"
 import { moviesRouter } from "./routers/moviesRouter.js"
+import { favoritesRouter } from "./routers/favoritesRouter.js"
 
 config()
 
@@ -16,17 +15,7 @@ app.use(morgan("dev"))
 app.use(cors())
 
 app.use("/api/v1/movies", moviesRouter)
-
-// app.get("/api/v1/movies", MoviesController.getAllMovies)
-// app.get("/api/v1/movies/:movieId", MoviesController.getOneMovie)
-// app.post("/api/v1/movies", MoviesController.postNewMovie)
-// app.delete("/api/v1/movies/:movieId", MoviesController.deleteOneMovie)
-// app.patch("/api/v1/movies/:movieId", MoviesController.patchOneMovie)
-app.post("/api/v1/movies/:movieId/favorites", FavoritesController.postNewFavorite)
-app.delete("/api/v1/favorites/:favoriteId", FavoritesController.deleteOneFavorite)
-app.get("/api/v1/favorites", FavoritesController.getAllFavorites)
-app.patch("/api/v1/movies/:movieId/update", FavoritesController.patchOneFavorite)
-app.get("/api/v1/favorites/:movieId", FavoritesController.getOneFavorite)
+app.use("/api/v1/favorites", favoritesRouter)
 
 connectToDataBase()
   .then(() => {
