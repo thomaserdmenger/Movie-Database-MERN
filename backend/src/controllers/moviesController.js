@@ -18,4 +18,21 @@ const getOneMovie = (req, res) => {
     })
 }
 
-export const MoviesController = { getAllMovies, getOneMovie }
+const postNewMovie = (req, res) => {
+  const newMovie = {
+    title: req.body.title,
+    year: req.body.year,
+    director: req.body.director,
+    plot: req.body.plot,
+    imdb: { rating: req.body.imdb.rating },
+  }
+
+  MoviesService.addNewMovie(newMovie)
+    .then((newMovie) => res.json(newMovie || {}))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not find movie" })
+    })
+}
+
+export const MoviesController = { getAllMovies, getOneMovie, postNewMovie }

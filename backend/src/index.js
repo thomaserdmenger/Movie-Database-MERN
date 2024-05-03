@@ -28,22 +28,7 @@ app.get("/api/v1/movies", MoviesController.getAllMovies)
 app.get("/api/v1/movies/:movieId", MoviesController.getOneMovie)
 
 // CreateOne movie in DB
-app.post("/api/v1/movies", (req, res) => {
-  const newMovie = {
-    title: req.body.title,
-    year: req.body.year,
-    director: req.body.director,
-    plot: req.body.plot,
-    imdb: { rating: req.body.imdb.rating },
-  }
-
-  MoviesService.addNewMovie(newMovie)
-    .then((newMovie) => res.json(newMovie || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movie" })
-    })
-})
+app.post("/api/v1/movies", MoviesController.postNewMovie)
 
 // DeleteOne movie (and Fav) in database
 app.delete("/api/v1/movies/:movieId", (req, res) => {
