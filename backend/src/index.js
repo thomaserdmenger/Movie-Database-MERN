@@ -3,10 +3,9 @@ import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
 import { connectToDataBase } from "./models/index.js"
-import { Movie } from "./models/MovieModel.js"
-import { Favorite } from "./models/FavModel.js"
-import { FavoritesService, MoviesService } from "./service/index.js"
+import { FavoritesService } from "./service/index.js"
 import { MoviesController } from "./controllers/MoviesController.js"
+import { FavoritesController } from "./controllers/favoritesController.js"
 
 config()
 
@@ -21,23 +20,7 @@ app.get("/api/v1/movies/:movieId", MoviesController.getOneMovie)
 app.post("/api/v1/movies", MoviesController.postNewMovie)
 app.delete("/api/v1/movies/:movieId", MoviesController.deleteOneMovie)
 app.patch("/api/v1/movies/:movieId", MoviesController.patchOneMovie)
-
-// Endpoints for Favorites Collection
-// CreateOne: Add new Favorite to Collection
-app.post("/api/v1/movies/:movieId/favorites", (req, res) => {
-  const newFavorite = {
-    ...req.body,
-    _id: req.body._id,
-    movieId: req.params.movieId,
-  }
-
-  FavoritesService.addMovieAsFavorite(newFavorite)
-    .then((newFavorite) => res.json(newFavorite || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not found Favorite" })
-    })
-})
+app.post("/api/v1/movies/:movieId/favorites", FavoritesController.postNewFavorite)
 
 // DeleteOne: Delete Favorite from Collection
 app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
