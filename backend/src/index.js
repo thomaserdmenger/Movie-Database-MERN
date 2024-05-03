@@ -25,14 +25,7 @@ app.use(cors())
 app.get("/api/v1/movies", MoviesController.getAllMovies)
 
 // ReadOne movie from DB
-app.get("/api/v1/movies/:movieId", (req, res) => {
-  MoviesService.showOneMovie(req.params.movieId)
-    .then((movie) => res.json(movie))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).res.json({ err, message: "Could not find movie" })
-    })
-})
+app.get("/api/v1/movies/:movieId", MoviesController.getOneMovie)
 
 // CreateOne movie in DB
 app.post("/api/v1/movies", (req, res) => {

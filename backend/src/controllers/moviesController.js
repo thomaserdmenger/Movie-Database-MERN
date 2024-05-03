@@ -9,4 +9,13 @@ const getAllMovies = (req, res) => {
     })
 }
 
-export const MoviesController = { getAllMovies }
+const getOneMovie = (req, res) => {
+  MoviesService.showOneMovie(req.params.movieId)
+    .then((movie) => res.json(movie))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).res.json({ err, message: "Could not find movie" })
+    })
+}
+
+export const MoviesController = { getAllMovies, getOneMovie }
