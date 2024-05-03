@@ -15,4 +15,15 @@ const postNewFavorite = (req, res) => {
     })
 }
 
-export const FavoritesController = { postNewFavorite }
+const deleteOneFavorite = (req, res) => {
+  const favoriteId = req.params.favoriteId
+
+  FavoritesService.deleteOneFavorite(favoriteId)
+    .then((deletedFavorite) => res.json(deletedFavorite || {}))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not found Favorite" })
+    })
+}
+
+export const FavoritesController = { postNewFavorite, deleteOneFavorite }

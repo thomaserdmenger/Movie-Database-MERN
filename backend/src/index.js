@@ -21,18 +21,7 @@ app.post("/api/v1/movies", MoviesController.postNewMovie)
 app.delete("/api/v1/movies/:movieId", MoviesController.deleteOneMovie)
 app.patch("/api/v1/movies/:movieId", MoviesController.patchOneMovie)
 app.post("/api/v1/movies/:movieId/favorites", FavoritesController.postNewFavorite)
-
-// DeleteOne: Delete Favorite from Collection
-app.delete("/api/v1/favorites/:favoriteId", (req, res) => {
-  const favoriteId = req.params.favoriteId
-
-  FavoritesService.deleteOneFavorite(favoriteId)
-    .then((deletedFavorite) => res.json(deletedFavorite || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not found Favorite" })
-    })
-})
+app.delete("/api/v1/favorites/:favoriteId", FavoritesController.deleteOneFavorite)
 
 // GetAll: Get all Favorites
 app.get("/api/v1/favorites", (req, res) => {
