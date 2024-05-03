@@ -6,6 +6,7 @@ import { connectToDataBase } from "./models/index.js"
 import { Movie } from "./models/MovieModel.js"
 import { Favorite } from "./models/FavModel.js"
 import { FavoritesService, MoviesService } from "./service/index.js"
+import { MoviesController } from "./controllers/MoviesController.js"
 
 // Import from dotenv
 config()
@@ -21,14 +22,7 @@ app.use(cors())
 // Create CRUD Routes
 // Endpoints for Movies Collection
 // ReadAll movies from DB
-app.get("/api/v1/movies", (req, res) => {
-  MoviesService.showAllMovies()
-    .then((movies) => res.json(movies))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movies" })
-    })
-})
+app.get("/api/v1/movies", MoviesController.getAllMovies)
 
 // ReadOne movie from DB
 app.get("/api/v1/movies/:movieId", (req, res) => {
