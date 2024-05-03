@@ -1,5 +1,14 @@
 import { FavoritesService } from "../service/index.js"
 
+const getAllFavorites = (req, res) => {
+  FavoritesService.showAllFavorites()
+    .then((favorites) => res.json(favorites))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not found Favorites" })
+    })
+}
+
 const postNewFavorite = (req, res) => {
   const newFavorite = {
     ...req.body,
@@ -26,4 +35,4 @@ const deleteOneFavorite = (req, res) => {
     })
 }
 
-export const FavoritesController = { postNewFavorite, deleteOneFavorite }
+export const FavoritesController = { postNewFavorite, deleteOneFavorite, getAllFavorites }
