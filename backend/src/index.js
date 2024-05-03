@@ -17,12 +17,11 @@ app.use(cors())
 app.use("/api/v1/movies", moviesRouter)
 app.use("/api/v1/favorites", favoritesRouter)
 
-connectToDataBase()
-  .then(() => {
-    const PORT = process.env.PORT
-    app.listen(PORT, () => console.log("Server runs", PORT))
-  })
-  .catch((err) => {
-    console.log(err)
-    process.exit()
-  })
+try {
+  await connectToDataBase()
+  const PORT = process.env.PORT
+  app.listen(PORT, () => console.log("Server runs", PORT))
+} catch (err) {
+  console.log(err)
+  process.exit()
+}
