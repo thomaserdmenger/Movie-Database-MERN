@@ -3,7 +3,6 @@ import morgan from "morgan"
 import cors from "cors"
 import { config } from "dotenv"
 import { connectToDataBase } from "./models/index.js"
-import { FavoritesService } from "./service/index.js"
 import { MoviesController } from "./controllers/MoviesController.js"
 import { FavoritesController } from "./controllers/favoritesController.js"
 
@@ -24,20 +23,7 @@ app.post("/api/v1/movies/:movieId/favorites", FavoritesController.postNewFavorit
 app.delete("/api/v1/favorites/:favoriteId", FavoritesController.deleteOneFavorite)
 app.get("/api/v1/favorites", FavoritesController.getAllFavorites)
 app.patch("/api/v1/movies/:movieId/update", FavoritesController.patchOneFavorite)
-
-// GetOne: Favorite
-app.get("/api/v1/favorites/:movieId", (req, res) => {
-  const movieId = req.params.movieId
-
-  FavoritesService.showOneFavorite(movieId)
-    .then((favorite) => res.json(favorite || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Favorite does not exist" })
-    })
-})
-
-// Neu: Conditional: App soll auf eingehene Request erst warten, wenn Verbindung zur Datenbank hergestellt ist
+app.get("/api/v1/favorites/:movieId", FavoritesController.getOneFavorite)
 
 connectToDataBase()
   .then(() => {
@@ -46,5 +32,5 @@ connectToDataBase()
   })
   .catch((err) => {
     console.log(err)
-    process.exit() // Node Prozess beenden, wenn nicht keine Datenbankverbindung
+    process.exit()
   })
