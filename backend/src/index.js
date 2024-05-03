@@ -20,19 +20,7 @@ app.get("/api/v1/movies", MoviesController.getAllMovies)
 app.get("/api/v1/movies/:movieId", MoviesController.getOneMovie)
 app.post("/api/v1/movies", MoviesController.postNewMovie)
 app.delete("/api/v1/movies/:movieId", MoviesController.deleteOneMovie)
-
-// UpdateOne movie in database
-app.patch("/api/v1/movies/:movieId", (req, res) => {
-  const movieId = req.params.movieId
-  const updatedContent = req.body
-
-  MoviesService.updateOneMovie(movieId, updatedContent)
-    .then((updatedMovie) => res.json(updatedMovie || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movie" })
-    })
-})
+app.patch("/api/v1/movies/:movieId", MoviesController.patchOneMovie)
 
 // Endpoints for Favorites Collection
 // CreateOne: Add new Favorite to Collection

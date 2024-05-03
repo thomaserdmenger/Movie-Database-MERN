@@ -46,4 +46,22 @@ const deleteOneMovie = (req, res) => {
     })
 }
 
-export const MoviesController = { getAllMovies, getOneMovie, postNewMovie, deleteOneMovie }
+const patchOneMovie = (req, res) => {
+  const movieId = req.params.movieId
+  const updatedContent = req.body
+
+  MoviesService.updateOneMovie(movieId, updatedContent)
+    .then((updatedMovie) => res.json(updatedMovie || {}))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not find movie" })
+    })
+}
+
+export const MoviesController = {
+  getAllMovies,
+  getOneMovie,
+  postNewMovie,
+  deleteOneMovie,
+  patchOneMovie,
+}
