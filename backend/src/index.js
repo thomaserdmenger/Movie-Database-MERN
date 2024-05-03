@@ -8,40 +8,18 @@ import { Favorite } from "./models/FavModel.js"
 import { FavoritesService, MoviesService } from "./service/index.js"
 import { MoviesController } from "./controllers/MoviesController.js"
 
-// Import from dotenv
 config()
 
-// Create Express App mit Server
 const app = express()
 
-// Middleware
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cors())
 
-// Create CRUD Routes
-// Endpoints for Movies Collection
-// ReadAll movies from DB
 app.get("/api/v1/movies", MoviesController.getAllMovies)
-
-// ReadOne movie from DB
 app.get("/api/v1/movies/:movieId", MoviesController.getOneMovie)
-
-// CreateOne movie in DB
 app.post("/api/v1/movies", MoviesController.postNewMovie)
-
-// DeleteOne movie (and Fav) in database
-app.delete("/api/v1/movies/:movieId", (req, res) => {
-  const movieId = req.params.movieId
-  const favId = req.params.favId
-
-  MoviesService.deleteOneMovie(movieId)
-    .then((deletedMovie) => res.json(deletedMovie || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movie" })
-    })
-})
+app.delete("/api/v1/movies/:movieId", MoviesController.deleteOneMovie)
 
 // UpdateOne movie in database
 app.patch("/api/v1/movies/:movieId", (req, res) => {
