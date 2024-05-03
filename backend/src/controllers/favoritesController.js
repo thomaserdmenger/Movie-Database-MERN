@@ -35,4 +35,21 @@ const deleteOneFavorite = (req, res) => {
     })
 }
 
-export const FavoritesController = { postNewFavorite, deleteOneFavorite, getAllFavorites }
+const patchOneFavorite = (req, res) => {
+  const movieId = req.params.movieId
+  const updatedContent = req.body
+
+  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
+    .then((updatedFav) => res.json(updatedFav || {}))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err, message: "Could not find fav" })
+    })
+}
+
+export const FavoritesController = {
+  postNewFavorite,
+  deleteOneFavorite,
+  getAllFavorites,
+  patchOneFavorite,
+}

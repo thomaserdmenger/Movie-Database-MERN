@@ -23,19 +23,7 @@ app.patch("/api/v1/movies/:movieId", MoviesController.patchOneMovie)
 app.post("/api/v1/movies/:movieId/favorites", FavoritesController.postNewFavorite)
 app.delete("/api/v1/favorites/:favoriteId", FavoritesController.deleteOneFavorite)
 app.get("/api/v1/favorites", FavoritesController.getAllFavorites)
-
-// UpdateOne: Update Fav when Movie updates
-app.patch("/api/v1/movies/:movieId/update", (req, res) => {
-  const movieId = req.params.movieId
-  const updatedContent = req.body
-
-  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
-    .then((updatedFav) => res.json(updatedFav || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find fav" })
-    })
-})
+app.patch("/api/v1/movies/:movieId/update", FavoritesController.patchOneFavorite)
 
 // GetOne: Favorite
 app.get("/api/v1/favorites/:movieId", (req, res) => {
