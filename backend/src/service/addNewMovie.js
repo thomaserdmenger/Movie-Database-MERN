@@ -1,5 +1,6 @@
 import { Movie } from "../models/MovieModel.js"
 
-export const addNewMovie = (movieData) => {
-  return Movie.create(movieData)
+export const addNewMovie = async (movieData) => {
+  const addedMovie = await Movie.create(movieData)
+  return addedMovie
 }

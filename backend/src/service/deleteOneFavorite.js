@@ -1,5 +1,6 @@
 import { Favorite } from "../models/FavModel.js"
 
-export const deleteOneFavorite = (favId) => {
-  return Favorite.findByIdAndDelete(favId)
+export const deleteOneFavorite = async (favId) => {
+  const deletedFav = await Favorite.findByIdAndDelete(favId)
+  return deletedFav
 }
