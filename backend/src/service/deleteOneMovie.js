@@ -2,12 +2,10 @@ import { Movie } from "../models/MovieModel.js"
 import { deleteOneFavorite } from "./deleteOneFavorite.js"
 import { showOneFavorite } from "./showOneFavorite.js"
 
-export const deleteOneMovie = (movieId) => {
-  return showOneFavorite(movieId).then((foundedFav) => {
-    if (!foundedFav) {
-      return Movie.findByIdAndDelete(movieId)
-    } else {
-      return deleteOneFavorite(movieId).then(() => Movie.findByIdAndDelete(movieId))
-    }
-  })
+export const deleteOneMovie = async (movieId) => {
+  const foundFavorite = await showOneFavorite(movieId)
+  if (!foundFavorite) return Movie.findByIdAndDelete(movieId)
+
+  await deleteOneFavorite(movieId)
+  return Movie.findByIdAndDelete(movieId)
 }

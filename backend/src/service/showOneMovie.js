@@ -1,5 +1,6 @@
 import { Movie } from "../models/MovieModel.js"
 
-export const showOneMovie = (movieId) => {
-  return Movie.findById(movieId)
+export const showOneMovie = async (movieId) => {
+  const singleMovie = await Movie.findById(movieId)
+  return singleMovie
 }

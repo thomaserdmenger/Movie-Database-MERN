@@ -1,5 +1,7 @@
 import { Favorite } from "../models/FavModel.js"
 
-export const updateFavoriteWithMovie = (movieId, updatedContent) => {
-  return Favorite.findByIdAndUpdate(movieId, { $set: updatedContent }, { new: true })
+export const updateFavoriteWithMovie = async (movieId, updatedContent) => {
+  const updatedFav = Favorite.findByIdAndUpdate(movieId, { $set: updatedContent }, { new: true })
+
+  return updatedFav
 }

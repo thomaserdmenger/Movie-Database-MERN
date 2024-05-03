@@ -1,5 +1,6 @@
 import { Movie } from "../models/MovieModel.js"
 
-export const showAllMovies = () => {
-  return Movie.find({})
+export const showAllMovies = async () => {
+  const allMovies = await Movie.find({})
+  return allMovies
 }
