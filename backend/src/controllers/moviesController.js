@@ -1,88 +1,92 @@
 import { FavoritesService, MoviesService } from "../service/index.js"
 
-const getAllMovies = (req, res) => {
-  MoviesService.showAllMovies()
-    .then((movies) => res.json(movies))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movies" })
-    })
-}
-
-const getOneMovie = (req, res) => {
-  MoviesService.showOneMovie(req.params.movieId)
-    .then((movie) => res.json(movie))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).res.json({ err, message: "Could not find movie" })
-    })
-}
-
-const postNewMovie = (req, res) => {
-  const newMovie = {
-    title: req.body.title,
-    year: req.body.year,
-    director: req.body.director,
-    plot: req.body.plot,
-    imdb: { rating: req.body.imdb.rating },
+const getAllMovies = async (req, res) => {
+  try {
+    const allMovies = await MoviesService.showAllMovies()
+    res.json(allMovies)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error, message: "Could not find movies" })
   }
-
-  MoviesService.addNewMovie(newMovie)
-    .then((newMovie) => res.json(newMovie || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movie" })
-    })
 }
 
-const deleteOneMovie = (req, res) => {
-  const movieId = req.params.movieId
-
-  MoviesService.deleteOneMovie(movieId)
-    .then((deletedMovie) => res.json(deletedMovie || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movie" })
-    })
-}
-
-const patchOneMovie = (req, res) => {
-  const movieId = req.params.movieId
-  const updatedContent = req.body
-
-  MoviesService.updateOneMovie(movieId, updatedContent)
-    .then((updatedMovie) => res.json(updatedMovie || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find movie" })
-    })
-}
-
-const postNewFavorite = (req, res) => {
-  const newFavorite = {
-    ...req.body,
-    _id: req.body._id,
-    movieId: req.params.movieId,
+const getOneMovie = async (req, res) => {
+  try {
+    const singleMovie = await MoviesService.showOneMovie(req.params.movieId)
+    res.json(singleMovie || {})
+  } catch (error) {
+    console.log(error)
+    res.status(500).res.json({ error, message: "Could not find movie" })
   }
-
-  FavoritesService.addMovieAsFavorite(newFavorite)
-    .then((newFavorite) => res.json(newFavorite || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not found Favorite" })
-    })
 }
 
-const patchOneFavorite = (req, res) => {
-  const movieId = req.params.movieId
-  const updatedContent = req.body
+const postNewMovie = async (req, res) => {
+  try {
+    const newMovie = {
+      title: req.body.title,
+      year: req.body.year,
+      director: req.body.director,
+      plot: req.body.plot,
+      imdb: { rating: req.body.imdb.rating },
+    }
 
-  FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
-    .then((updatedFav) => res.json(updatedFav || {}))
-    .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err, message: "Could not find fav" })
-    })
+    const addedMovie = await MoviesService.addNewMovie(newMovie)
+    res.json(addedMovie || {})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error, message: "Could not add new movie" })
+  }
+}
+
+const deleteOneMovie = async (req, res) => {
+  try {
+    const movieId = req.params.movieId
+    const deletedMovie = await MoviesService.deleteOneMovie(movieId)
+    res.json(deletedMovie || {})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error, message: "Could not delete movie" })
+  }
+}
+
+const patchOneMovie = async (req, res) => {
+  try {
+    const movieId = req.params.movieId
+    const updatedContent = req.body
+    const updatedMovie = await MoviesService.updateOneMovie(movieId, updatedContent)
+    res.json(updatedMovie || {})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error, message: "Could not update movie" })
+  }
+}
+
+const postNewFavorite = async (req, res) => {
+  try {
+    const newFavorite = {
+      ...req.body,
+      _id: req.body._id,
+      movieId: req.params.movieId,
+    }
+
+    const addedFavorite = FavoritesService.addMovieAsFavorite(newFavorite)
+    res.json(addedFavorite || {})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error, message: "Could not add Favorite" })
+  }
+}
+
+const patchOneFavorite = async (req, res) => {
+  try {
+    const movieId = req.params.movieId
+    const updatedContent = req.body
+    const updatedFav = await FavoritesService.updateFavoriteWithMovie(movieId, updatedContent)
+    res.json(updatedFav || {})
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error, message: "Could not update fav" })
+  }
 }
 
 export const MoviesController = {
